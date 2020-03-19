@@ -1,27 +1,44 @@
 // ==UserScript==
 // @name         Cobmais - Util
 // @namespace    http://app.cobmais.com.br/
-// @version      0.1.3
+// @version      0.2.0
 // @description  Add IdEvento
 // @author       Rodrigo Mescua
 // @match        http*://app.cobmais.com.br/cob/telecobranca*
 // @match        http*://hmlapp.cobmais.com.br/cob/telecobranca*
 // @match        http*://localhost:*/telecobranca*
 // @require  http://code.jquery.com/jquery-3.4.1.min.js
+// @require  https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js
 // @grant    GM_addStyle
+// @grant    GM_setClipboard
 // ==/UserScript==
-
+this.$ = this.jQuery = jQuery.noConflict(true) // eslint-disable-line no-undef
 waitForKeyElements ("div.ev-item", actionFunction);
+waitForKeyElements ("span.btneventofinal", testeCopy);
+
 
 function actionFunction (jNode) {
     var torrents = document.querySelectorAll('span.ev-item-titulo');
-
+    var teste = '';
     for ( var i = 0; i < torrents.length; i++ ) {
-        var teste = ' - IdEv: ' + torrents[i].parentElement.parentElement.id.replace('ev-item-','') + '.';
-        if (torrents[i].innerText.indexOf(teste) == -1){
-            torrents[i].innerText = torrents[i].innerText.concat(teste)
+        var idEvento = torrents[i].parentElement.parentElement.id.replace('ev-item-','');
+        teste = '  <span id="btnEv' + idEvento + '" title="Clique para Copiar o ID Evento" class="btn btnevento label ct-status ct-status-conf" style="cursor: pointer" data-clipboard-text="' + idEvento + '">' + idEvento + '</span>';
+        if (i == torrents.length - 1) {
+            teste = '  <span id="btnEv' + idEvento + '" title="Clique para Copiar o ID Evento" class="btn btnevento btneventofinal ct-status ct-status-conf" style="cursor: pointer" data-clipboard-text="' + idEvento + '">' + idEvento + '</span>';
+        }
+        if (torrents[i].innerHTML.indexOf(teste) == -1){
+            torrents[i].innerHTML = torrents[i].innerHTML.concat(teste);
         }
     }
+}
+
+function testeCopy (teste) {
+    var btns = document.querySelectorAll('span.btnevento');
+    var clipboard = new ClipboardJS(btns);
+
+    clipboard.on('success', function(e) {
+        toastr.success('ID Evento copiado para a Área de Transferência');
+    });
 }
 
 /*--- waitForKeyElements():  A utility function, for Greasemonkey scripts,
@@ -41,29 +58,15 @@ function actionFunction (jNode) {
 
     IMPORTANT: This function requires your script to have loaded jQuery.
 */
-function waitForKeyElements (
-    selectorTxt,    /* Required: The jQuery selector string that
-                        specifies the desired element(s).
-                    */
-    actionFunction, /* Required: The code to run when elements are
-                        found. It is passed a jNode to the matched
-                        element.
-                    */
-    bWaitOnce,      /* Optional: If false, will continue to scan for
-                        new elements even after the first match is
-                        found.
-                    */
-    iframeSelector  /* Optional: If set, identifies the iframe to
-                        search.
-                    */
-) {
+function waitForKeyElements (selectorTxt, actionFunction, bWaitOnce, iframeSelector) {
     var targetNodes, btargetsFound;
 
-    if (typeof iframeSelector == "undefined")
-        targetNodes     = $(selectorTxt);
-    else
-        targetNodes     = $(iframeSelector).contents ()
-                                           .find (selectorTxt);
+    if (typeof iframeSelector == "undefined") {
+        targetNodes = $(selectorTxt);
+    }
+    else {
+        targetNodes = $(iframeSelector).contents().find(selectorTxt);
+    }
 
     if (targetNodes  &&  targetNodes.length > 0) {
         btargetsFound   = true;
