@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cobmais - Util
 // @namespace    http://app.cobmais.com.br/
-// @version      0.2.0
+// @version      0.3.0
 // @description  Add IdEvento
 // @author       Rodrigo Mescua
 // @match        http*://app.cobmais.com.br/cob/telecobranca*
@@ -22,9 +22,9 @@ function actionFunction (jNode) {
     var teste = '';
     for ( var i = 0; i < torrents.length; i++ ) {
         var idEvento = torrents[i].parentElement.parentElement.id.replace('ev-item-','');
-        teste = '  <span id="btnEv' + idEvento + '" title="Clique para Copiar o ID Evento" class="btn btnevento label ct-status ct-status-conf" style="cursor: pointer" data-clipboard-text="' + idEvento + '">' + idEvento + '</span>';
+        teste = '  <span id="btnEv' + idEvento + '" title="Clique para Copiar o ID Evento" class="btn btnevento badge badge-default" style="cursor: pointer" data-clipboard-text="' + idEvento + '">' + idEvento + '</span>';
         if (i == torrents.length - 1) {
-            teste = '  <span id="btnEv' + idEvento + '" title="Clique para Copiar o ID Evento" class="btn btnevento btneventofinal ct-status ct-status-conf" style="cursor: pointer" data-clipboard-text="' + idEvento + '">' + idEvento + '</span>';
+            teste = '  <span id="btnEv' + idEvento + '" title="Clique para Copiar o ID Evento" class="btn btnevento btneventofinal badge badge-default" style="cursor: pointer" data-clipboard-text="' + idEvento + '">' + idEvento + '</span>';
         }
         if (torrents[i].innerHTML.indexOf(teste) == -1){
             torrents[i].innerHTML = torrents[i].innerHTML.concat(teste);
