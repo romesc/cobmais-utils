@@ -7,6 +7,7 @@
 // @match        http*://app.cobmais.com.br/cob/telecobranca*
 // @match        http*://hmlapp.cobmais.com.br/cob/telecobranca*
 // @match        http*://localhost:*/telecobranca*
+// @icon         https://raw.githubusercontent.com/romesc/cobmais-utils/master/favicon.ico
 // @require  http://code.jquery.com/jquery-3.4.1.min.js
 // @require  https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js
 // @grant    GM_addStyle
