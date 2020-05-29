@@ -4,10 +4,10 @@
 // @version      1.0.2
 // @description  Add IdEvento
 // @author       Rodrigo Mescua
-// @match        http*://app.cobmais.com.br/cob/telecobranca*
-// @match        http*://hmlapp.cobmais.com.br/cob/telecobranca*
+// @match        http*://*.cobmais.com.br/cob/telecobranca*
 // @match        http*://localhost:*/telecobranca*
 // @match        http*://172.36.1.4/*/telecobranca*
+// @match        http*://192.36.1.4/*/telecobranca*
 // @match        http*://192.36.1.4/*/telecobranca*
 // @icon         https://raw.githubusercontent.com/romesc/cobmais-utils/master/favicon.ico
 // @require  http://code.jquery.com/jquery-3.4.1.min.js
