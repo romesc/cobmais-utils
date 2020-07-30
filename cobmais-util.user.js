@@ -8,6 +8,7 @@
 // @match        http*://localhost:*/telecobranca*
 // @match        http*://172.36.1.4/*/telecobranca*
 // @match        http*://192.36.1.4/*/telecobranca*
+// @match        http*://*cobmais*/*/telecobranca*
 // @icon         https://raw.githubusercontent.com/romesc/cobmais-utils/master/favicon.ico
 // @require  http://code.jquery.com/jquery-3.4.1.min.js
 // @require  https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js
