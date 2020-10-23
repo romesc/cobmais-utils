@@ -16,31 +16,57 @@
 // @grant    GM_setClipboard
 // ==/UserScript==
 this.$ = this.jQuery = jQuery.noConflict(true) // eslint-disable-line no-undef
-waitForKeyElements ("div.ev-item", actionFunction);
+waitForKeyElements ("div.ev-item", evcFunction);
+waitForKeyElements ("div.ct-item", conFunction);
 waitForKeyElements ("span.btneventofinal", testeCopy);
+waitForKeyElements ("span.btncontratofinal", testeConCopy);
 
 
-function actionFunction (jNode) {
-    var torrents = document.querySelectorAll('span.ev-item-titulo');
+function evcFunction (jNode) {
+    var eventos = document.querySelectorAll('span.ev-item-titulo');
     var teste = '';
-    for ( var i = 0; i < torrents.length; i++ ) {
-        var idEvento = torrents[i].parentElement.parentElement.id.replace('ev-item-','');
-        teste = '  <span id="btnEv' + idEvento + '" title="Clique para Copiar o ID Evento" class="btn btnevento badge badge-primary" style="cursor: pointer" data-clipboard-text="' + idEvento + '">' + idEvento + '</span>';
-        if (i == torrents.length - 1) {
-            teste = '  <span id="btnEv' + idEvento + '" title="Clique para Copiar o ID Evento" class="btn btnevento btneventofinal badge badge-primary" style="cursor: pointer" data-clipboard-text="' + idEvento + '">' + idEvento + '</span>';
+    for ( var i = 0; i < eventos.length; i++ ) {
+        var idEvento = eventos[i].parentElement.parentElement.id.replace('ev-item-','');
+        teste = '  <span id="btnEv' + idEvento + '" title="Clique para Copiar o ID Evento" class="btn btnevento badge badge-primary" style="cursor: pointer;" data-clipboard-text="' + idEvento + '">' + idEvento + '</span>';
+        if (i == eventos.length - 1) {
+            teste = '  <span id="btnEv' + idEvento + '" title="Clique para Copiar o ID Evento" class="btn btnevento btneventofinal badge badge-primary" style="cursor: pointer;" data-clipboard-text="' + idEvento + '">' + idEvento + '</span>';
         }
-        if (torrents[i].innerHTML.indexOf(teste) == -1){
-            torrents[i].innerHTML = torrents[i].innerHTML.concat(teste);
+        if (eventos[i].innerHTML.indexOf(teste) == -1){
+            eventos[i].innerHTML = eventos[i].innerHTML.concat(teste);
+        }
+    }
+}
+
+function conFunction (jNode) {
+    var contratos = document.querySelectorAll('span.ct-item-clique');
+    var teste = '';
+    for ( var j = 0; j < contratos.length; j++ ) {
+        var idContrato = contratos[j].parentElement.dataset.ctt;
+        teste = '\t<span id="btnCt' + idContrato + '" title="Clique para Copiar o ID Contrato" class="btn btncontrato badge badge-primary" style="cursor: pointer;" data-clipboard-text="' + idContrato + '">' + idContrato + '</span>';
+        if (j == contratos.length - 1) {
+            teste = '\t<span id="btnCt' + idContrato + '" title="Clique para Copiar o ID Contrato" class="btn btncontrato btncontratofinal badge badge-primary" style="cursor: pointer;" data-clipboard-text="' + idContrato + '">' + idContrato + '</span>';
+        }
+        if (contratos[j].innerHTML.indexOf(teste) == -1){
+            contratos[j].innerHTML = contratos[j].innerHTML.concat(teste);
         }
     }
 }
 
 function testeCopy (teste) {
-    var btns = document.querySelectorAll('span.btnevento');
-    var clipboard = new ClipboardJS(btns);
+    var btns1 = document.querySelectorAll('span.btnevento');
+    var clipboard = new ClipboardJS(btns1);
 
     clipboard.on('success', function(e) {
-        toastr.success('ID Evento copiado para a Área de Transferência');
+        toastr.success('ID ' + (e.trigger.parentElement.classList[0] == "ct-item-clique" ? 'Contrato' : 'Evento') + ' copiado para a Área de Transferência');
+    });
+}
+
+function testeConCopy (teste) {
+    var btns2 = document.querySelectorAll('span.btncontrato');
+    var clipboard = new ClipboardJS(btns2);
+
+    clipboard.on('success', function(e) {
+        toastr.success('ID ' + (e.trigger.parentElement.classList[0] == "ct-item-clique" ? 'Contrato' : 'Evento') + ' copiado para a Área de Transferência');
     });
 }
 
