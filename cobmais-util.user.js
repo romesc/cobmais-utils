@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Cobmais - Util
 // @namespace    http://app.cobmais.com.br/
-// @version      1.0.7
-// @description  Add IdEvento
+// @version      1.0.8
+// @description  Add IdEvento e IdContrato
 // @author       Rodrigo Mescua
 // @match        http*://*.cobmais.com.br/*/telecobranca*
 // @match        http*://localhost:*/telecobranca*
