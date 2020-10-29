@@ -18,9 +18,10 @@
 this.$ = this.jQuery = jQuery.noConflict(true) // eslint-disable-line no-undef
 waitForKeyElements ("div.ev-item", evcFunction);
 waitForKeyElements ("div.ct-item", conFunction);
+waitForKeyElements (".ct-sel-neg", negFunction);
 waitForKeyElements ("span.btneventofinal", testeCopy);
 waitForKeyElements ("span.btncontratofinal", testeConCopy);
-
+waitForKeyElements ("span.btnnegociacaofinal", testeNegCopy);
 
 function evcFunction (jNode) {
     var eventos = document.querySelectorAll('span.ev-item-titulo');
@@ -52,12 +53,27 @@ function conFunction (jNode) {
     }
 }
 
+function negFunction (jNode) {
+    var negs = document.querySelectorAll('.ct-sel-neg');
+    var teste = '';
+    for ( var j = 0; j < negs.length; j++ ) {
+        var idNeg = negs[j].value;
+        teste = '\t<span id="btnNeg' + idNeg + '" title="Clique para Copiar o ID Negociação" class="btn btnnegociacao badge badge-primary" style="cursor: pointer;" data-clipboard-text="' + idNeg + '">Neg ' + idNeg + '</span>';
+        if (j == negs.length - 1) {
+            teste = '\t<span id="btnNeg' + idNeg + '" title="Clique para Copiar o ID Negociação" class="btn btnnegociacao btnnegociacaofinal badge badge-primary" style="cursor: pointer;" data-clipboard-text="' + idNeg + '">Neg ' + idNeg + '</span>';
+        }
+        if (negs[j].parentElement.innerHTML.indexOf(teste) == -1){
+            negs[j].outerHTML = negs[j].outerHTML.concat(teste);
+        }
+    }
+}
+
 function testeCopy (teste) {
     var btns1 = document.querySelectorAll('span.btnevento');
     var clipboard = new ClipboardJS(btns1);
 
     clipboard.on('success', function(e) {
-        toastr.success('ID ' + (e.trigger.parentElement.classList[0] == "ct-item-clique" ? 'Contrato' : 'Evento') + ' copiado para a Área de Transferência');
+        toastr.success('ID Evento copiado para a Área de Transferência');
     });
 }
 
@@ -66,7 +82,16 @@ function testeConCopy (teste) {
     var clipboard = new ClipboardJS(btns2);
 
     clipboard.on('success', function(e) {
-        toastr.success('ID ' + (e.trigger.parentElement.classList[0] == "ct-item-clique" ? 'Contrato' : 'Evento') + ' copiado para a Área de Transferência');
+        toastr.success('ID Contrato copiado para a Área de Transferência');
+    });
+}
+
+function testeNegCopy (teste) {
+    var btns3 = document.querySelectorAll('span.btnnegociacao');
+    var clipboard = new ClipboardJS(btns3);
+
+    clipboard.on('success', function(e) {
+        toastr.success('ID Negociação copiado para a Área de Transferência');
     });
 }
 
