@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cobmais - Util
 // @namespace    http://app.cobmais.com.br/
-// @version      1.0.10
+// @version      1.0.11
 // @description  Add IdEvento e IdContrato
 // @author       Rodrigo Mescua
 // @match        http*://*.cobmais.com.br/*/telecobranca*
@@ -16,7 +16,7 @@
 // @grant    GM_setClipboard
 // ==/UserScript==
 this.$ = this.jQuery = jQuery.noConflict(true) // eslint-disable-line no-undef
-waitForKeyElements ("div.ev-item", evcFunction);
+waitForKeyElements ("div.ev-item-inclusao", evcFunction);
 waitForKeyElements ("div.ct-item", conFunction);
 waitForKeyElements (".ct-sel-neg", negFunction);
 waitForKeyElements ("span.btneventofinal", testeCopy);
@@ -24,16 +24,20 @@ waitForKeyElements ("span.btncontratofinal", testeConCopy);
 waitForKeyElements ("span.btnnegociacaofinal", testeNegCopy);
 
 function evcFunction (jNode) {
-    var eventos = document.querySelectorAll('span.ev-item-titulo');
+    var eventos = document.querySelectorAll('div.ev-item-inclusao');
     var teste = '';
     for ( var i = 0; i < eventos.length; i++ ) {
+        if (eventos[i].style.display === "none") {
+            continue;
+        }
+
         var idEvento = eventos[i].parentElement.parentElement.id.replace('ev-item-','');
         teste = '  <span id="btnEv' + idEvento + '" title="Clique para Copiar o ID Evento" class="btn btnevento badge badge-primary" style="cursor: pointer;" data-clipboard-text="' + idEvento + '">' + idEvento + '</span>';
         if (i == eventos.length - 1) {
             teste = '  <span id="btnEv' + idEvento + '" title="Clique para Copiar o ID Evento" class="btn btnevento btneventofinal badge badge-primary" style="cursor: pointer;" data-clipboard-text="' + idEvento + '">' + idEvento + '</span>';
         }
         if (eventos[i].innerHTML.indexOf(teste) == -1){
-            eventos[i].innerHTML = eventos[i].innerHTML.concat(teste);
+            eventos[i].insertAdjacentHTML('beforeEnd',teste);
         }
     }
 }
