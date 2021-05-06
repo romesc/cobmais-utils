@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Cobmais - Util
 // @namespace    http://app.cobmais.com.br/
-// @version      1.0.11
-// @description  Add IdEvento e IdContrato
+// @version      1.0.12
+// @description  Correção para quando existem duas ou mais Negociações
 // @author       Rodrigo Mescua
 // @match        http*://*.cobmais.com.br/*/telecobranca*
 // @match        http*://localhost:*/telecobranca*
@@ -60,17 +60,23 @@ function conFunction (jNode) {
 function negFunction (jNode) {
     var negs = document.querySelectorAll('.ct-sel-neg');
     var teste = '';
-    for ( var j = 0; j < negs.length; j++ ) {
-        var idNeg = negs[j].value;
-        teste = '\t<span id="btnNeg' + idNeg + '" title="Clique para Copiar o ID Negociação" class="btn btnnegociacao badge badge-primary" style="cursor: pointer;" data-clipboard-text="' + idNeg + '">Neg ' + idNeg + '</span>';
-        if (j == negs.length - 1) {
-            teste = '\t<span id="btnNeg' + idNeg + '" title="Clique para Copiar o ID Negociação" class="btn btnnegociacao btnnegociacaofinal badge badge-primary" style="cursor: pointer;" data-clipboard-text="' + idNeg + '">Neg ' + idNeg + '</span>';
-        }
-        if (negs[j].parentElement.innerHTML.indexOf(teste) == -1){
-            negs[j].outerHTML = negs[j].outerHTML.concat(teste);
-        }
+
+    teste = '\t<span id="btnCopiarNeg" title="Clique para copiar o ID da Negociação selecionada" class="btn btnnegociacao badge badge-primary" style="cursor: pointer;">Copiar ID Neg</span>';
+
+    if (negs[0].parentNode.lastElementChild.classList.contains("btnnegociacao")){
+        negs[0].parentNode.lastElementChild.remove();
     }
+
+    if (negs[0].parentElement.innerHTML.indexOf(teste) == -1){
+        negs[0].parentElement.insertAdjacentHTML('beforeEnd', teste);
+    }
+
+    document.getElementById ("btnCopiarNeg").addEventListener (
+        "click", testeNegCopy, false
+    );
 }
+
+
 
 function testeCopy (teste) {
     var btns1 = document.querySelectorAll('span.btnevento');
@@ -91,12 +97,10 @@ function testeConCopy (teste) {
 }
 
 function testeNegCopy (teste) {
-    var btns3 = document.querySelectorAll('span.btnnegociacao');
-    var clipboard = new ClipboardJS(btns3);
+    var btns3 = document.querySelectorAll('.ct-sel-neg option:checked')[0];
 
-    clipboard.on('success', function(e) {
-        toastr.success('ID Negociação copiado para a Área de Transferência');
-    });
+    GM_setClipboard(btns3.value);
+    toastr.success('ID Negociação copiado para a Área de Transferência');
 }
 
 /*--- waitForKeyElements():  A utility function, for Greasemonkey scripts,
