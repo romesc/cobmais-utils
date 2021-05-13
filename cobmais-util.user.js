@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Cobmais - Util
 // @namespace    http://app.cobmais.com.br/
-// @version      1.0.12
-// @description  Correção para quando existem duas ou mais Negociações
+// @version      1.0.13
+// @description  Auxiliar Testes e Debugs
 // @author       Rodrigo Mescua
 // @match        http*://*.cobmais.com.br/*/telecobranca*
 // @match        http*://localhost:*/telecobranca*
@@ -57,27 +57,6 @@ function conFunction (jNode) {
     }
 }
 
-function negFunction (jNode) {
-    var negs = document.querySelectorAll('.ct-sel-neg');
-    var teste = '';
-
-    teste = '\t<span id="btnCopiarNeg" title="Clique para copiar o ID da Negociação selecionada" class="btn btnnegociacao badge badge-primary" style="cursor: pointer;">Copiar ID Neg</span>';
-
-    if (negs[0].parentNode.lastElementChild.classList.contains("btnnegociacao")){
-        negs[0].parentNode.lastElementChild.remove();
-    }
-
-    if (negs[0].parentElement.innerHTML.indexOf(teste) == -1){
-        negs[0].parentElement.insertAdjacentHTML('beforeEnd', teste);
-    }
-
-    document.getElementById ("btnCopiarNeg").addEventListener (
-        "click", testeNegCopy, false
-    );
-}
-
-
-
 function testeCopy (teste) {
     var btns1 = document.querySelectorAll('span.btnevento');
     var clipboard = new ClipboardJS(btns1);
@@ -96,10 +75,34 @@ function testeConCopy (teste) {
     });
 }
 
-function testeNegCopy (teste) {
-    var btns3 = document.querySelectorAll('.ct-sel-neg option:checked')[0];
+function negFunction (jNode) {
+    var negs = document.querySelectorAll('.ct-neg');
+    var teste = '';
 
-    GM_setClipboard(btns3.value);
+    for (var j = 0; j < negs.length; j++ ) {
+
+        if (negs[j].lastElementChild.classList.contains("btnnegociacao")){
+            negs[j].lastElementChild.remove();
+        }
+
+        var idNeg = negs[j].lastElementChild.id.replace('ppvNegociacao', '');
+
+        teste = '\t<span id="btnCopiarNeg' + idNeg + '" title="Clique para copiar o ID da Negociação selecionada" class="btn btnnegociacao badge badge-primary" style="cursor: pointer;">Copiar ID Neg</span>';
+
+        if (negs[j].innerHTML.indexOf(teste) == -1){
+            negs[j].insertAdjacentHTML('beforeEnd', teste);
+        }
+
+        document.getElementById("btnCopiarNeg" + idNeg).addEventListener (
+            "click", testeNegCopy, false
+        );
+    }
+}
+
+function testeNegCopy (teste) {
+    var $combo = document.getElementById("selNegociacao" + teste.target.id.replace('btnCopiarNeg',''));
+
+    GM_setClipboard($combo.value);
     toastr.success('ID Negociação copiado para a Área de Transferência');
 }
 
