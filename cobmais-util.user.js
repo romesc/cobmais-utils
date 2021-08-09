@@ -85,7 +85,7 @@ function negFunction (jNode) {
             negs[j].lastElementChild.remove();
         }
 
-        var idNeg = negs[j].lastElementChild.id.replace('ppvNegociacao', '');
+        var idNeg = negs[j].lastElementChild.firstElementChild.id.replace('ppvNegociacao', '');
 
         teste = '\t<span id="btnCopiarNeg' + idNeg + '" title="Clique para copiar o ID da Negociação selecionada" class="btn btnnegociacao badge badge-primary" style="cursor: pointer;">Copiar ID Neg</span>';
 
