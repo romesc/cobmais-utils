@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cobmais - Util
 // @namespace    http://app.cobmais.com.br/
-// @version      1.0.13
+// @version      1.0.14
 // @description  Auxiliar Testes e Debugs
 // @author       Rodrigo Mescua
 // @match        http*://*.cobmais.com.br/*/telecobranca*
